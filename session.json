@@ -1,0 +1,131 @@
+{
+    "scenes": [
+        {
+            "length": 257000,
+            "name": "Text intro",
+            "shader": 0
+        },
+        {
+            "length": 29500,
+            "name": "Something",
+            "shader": 3
+        },
+        {
+            "length": 75500,
+            "name": "Pelvis rotation",
+            "shader": 2
+        },
+        {
+            "length": 67500,
+            "name": "Cramping outro",
+            "shader": 4
+        }
+    ],
+    "shaders": [
+        {
+            "channels": [
+                {
+                    "shader": 0,
+                    "type": 2
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "id": "1552471338005"
+        },
+        {
+            "channels": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "id": "1552471374527"
+        },
+        {
+            "channels": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "id": "1552471376254"
+        },
+        {
+            "channels": [
+                {
+                    "filename": "data/textures/hedge.png",
+                    "type": 1
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "id": "1552471380479"
+        },
+        {
+            "channels": [
+                {
+                    "shader": 1,
+                    "type": 2
+                },
+                {
+                    "shader": 2,
+                    "type": 2
+                },
+                {
+                    "shader": 3,
+                    "type": 2
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "id": "1552471411688"
+        }
+    ]
+}
