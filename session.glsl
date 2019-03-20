@@ -207,44 +207,51 @@ vec4 pixel(vec2 p) {
     p -= .5;
     p.x *= resolution.x / resolution.y;
 
-
-    p.y += tan(sin(p.x * .5) * .05 + time) * .02;
-
     p.x += tan(p.y + time * .5 + 0.5 + cnoise(vec3(p * 2.5, time * 0.15))) * .01;
+    p.x += sin(p.x * 2. + time) * .2;
 
+    float text = 2000.0;
 
-    float text = rohtie(p);
-    text = min(text, dawgphaze(p));
+    if (time > 19.0) {
+      p.y += tan(sin(p.x * .5) * .05 + time + 1.3) * .02;
 
-    text -= max((30.5 - time * 4.5), 0.);
-    // text += max((0.5 - time * 0.15), 0.);
+      text = rohtie(p);
+      text = min(text, dawgphaze(p));
 
+      if (text > 0.0) {
+          // OUT
+          q /= 1.01;
+          q += 0.005;
 
-    //  BlackPurpl€$BlackPurpl£ 2
+          return texture(channel0, q) *= vec4(1.01, 1.01, 1.0, 0.) * .97;
+      }
+    }
+    else if (time > 17.0) {
+      p.y += tan(sin(p.x * .5) * .05 + time + 1.3) * .02;
 
+      text = rohtie(p);
+      text = min(text, dawgphaze(p));
 
+      if (text < 0.0) {
+          // IN
+          q *= 1.01;
+          q -= 0.005;
 
-    // text = smoothstep(0., 0.001, text);
+          return 0.01 + texture(channel0, q) * vec4(.7, .5, .8, 0.) * 1.15;
+      }
+    }
+    else {
+      text = rohtie(p);
+      text = min(text, dawgphaze(p));
+      text = max(text, -p.y - time + 3.15 + sin(p.x * 20.) * .2);
 
-    // return vec4(text);
+      if (text < 0.0) {
+          // IN
+          q *= 1.01;
+          q -= 0.005;
 
-    if (text < 0.0) {
-        // q.x = 1. - q.x;
-        // q.x += 0.1;
-        // q.x *= 0.999;
-        // return vec4(0.);
-
-        // IN
-        q *= 1.01;
-        q -= 0.005;
-
-        // OUT
-        // q /= 1.01;
-        // q += 0.005;
-
-        return 0.01 + texture(channel0, q) * vec4(.7, .5, .8, 0.) * 1.15;
-
-        // return texture(channel0, q) *= vec4(1.01, 1.01, 1.0, 0.) * .97;
+          return 0.01 + texture(channel0, q) * vec4(.7, .5, .8, 0.) * 1.15;
+      }
     }
 
     p += cnoise(vec3(p * 0.8, 1.5 + time * 0.012));
@@ -257,7 +264,8 @@ vec4 pixel(vec2 p) {
     r /= p.x;
 
     // EXPLODE
-    // r += tan(time * 20.);
+    float explodeTime = max(time - 16.0, 0.);
+    r += tan(min(explodeTime, 20.) * explodeTime);
 
     return vec4(r + p.x * .01, r - abs(p.x * 0.25) * 1.2, r - (1. - q.y) * .25, 0.);
 

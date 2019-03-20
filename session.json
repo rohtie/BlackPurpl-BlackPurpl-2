@@ -1,17 +1,17 @@
 {
     "scenes": [
         {
-            "length": 257000,
+            "length": 175500,
             "name": "Text intro",
-            "shader": 0
+            "shader": 3
         },
         {
-            "length": 29500,
+            "length": 59500,
             "name": "Something",
             "shader": 3
         },
         {
-            "length": 75500,
+            "length": 127000,
             "name": "Pelvis rotation",
             "shader": 2
         },
@@ -86,8 +86,8 @@
         {
             "channels": [
                 {
-                    "filename": "data/textures/hedge.png",
-                    "type": 1
+                    "shader": 3,
+                    "type": 2
                 },
                 {
                     "type": 0
@@ -107,11 +107,7 @@
         {
             "channels": [
                 {
-                    "shader": 1,
-                    "type": 2
-                },
-                {
-                    "shader": 2,
+                    "shader": 3,
                     "type": 2
                 },
                 {
@@ -119,10 +115,16 @@
                     "type": 2
                 },
                 {
-                    "type": 0
+                    "shader": 3,
+                    "type": 2
                 },
                 {
-                    "type": 0
+                    "shader": 3,
+                    "type": 2
+                },
+                {
+                    "shader": 3,
+                    "type": 2
                 }
             ],
             "id": "1552471411688"
