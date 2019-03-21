@@ -201,6 +201,118 @@ float dawgphaze(vec2 p) {
     return r;
 }
 
+// BlackPurpl€ $BlackPurpl£ 2
+float black(vec2 p) {
+    p.x += 1.15;
+    p.y += -0.25;
+    p /= 0.35;
+
+    float r = 200.0;
+
+    // B
+    r = min(r, max(-p.x + 1.9, length(p - vec2(1.9, -0.2)) - 0.5));
+    r = min(r, max(-p.x + 1.9, length(p - vec2(1.9, -1.2)) - 0.5));
+    r = min(r, box(p - vec2(2.015, -0.8), vec2(0.1, 0.3)));
+
+    // L
+    r = min(r, box(p - vec2(2.5, -0.6), vec2(0.05, 0.3)));
+    r = min(r, box(p - vec2(2.6, -0.85), vec2(0.1, 0.05)));
+
+    // A
+    r = min(r, box(p - vec2(3.4, -0.25), vec2(0.3, 0.05)));
+    r = min(r, box((p - vec2(3.075, -0.75)) * rotate(-acos(-1.) * .275), vec2(.75, 0.05)));
+    r = min(r, box(p - vec2(3.65, -0.7), vec2(0.05, .5)));
+
+    // C
+    r = min(r, box(p - vec2(3.85, -0.7), vec2(0.05, .5)));
+    r = min(r, box(p - vec2(4.0, -0.25), vec2(0.1, 0.05)));
+    r = min(r, box(p - vec2(4.0, -1.15), vec2(0.1, 0.05)));
+    r = min(r, box(p - vec2(4.05, -1.05), vec2(0.05, 0.05)));
+    r = min(r, box(p - vec2(4.05, -0.35), vec2(0.05, 0.05)));
+
+    // K
+    r = min(r, box(p - vec2(4.25, -0.7), vec2(0.05, .95)));
+    r = min(r, box((p - vec2(4.4, -0.75)) * rotate(-acos(-1.) * .275), vec2(.2, 0.05)));
+    r = min(r, box((p - vec2(4.6, -1.)) * rotate(-acos(-1.) * -.2), vec2(.3, 0.05)));
+
+    return r;
+}
+
+// €
+float euro(vec2 p) {
+    p.x += 1.15;
+    p.y += -0.2;
+
+    p /= 0.35;
+
+    float r = 200.0;
+
+    r = max(p.x - 4.45, length(p - vec2(4.45, -0.2)) - 0.5);
+    r = max(r, -(r + 0.15));
+    r = max(r, -box(p - vec2(4.6, -0.2), vec2(0.35, 0.2)));
+    r = min(r, box(p - vec2(4.05, -0.15), vec2(0.2, 0.05)));
+    r = min(r, box(p - vec2(4.05, -0.0), vec2(0.2, 0.05)));
+
+    return r;
+}
+
+// £
+float gbp(vec2 p) {
+    p.x += 1.15;
+    p.y += -0.15;
+
+    p /= 0.35;
+
+    float r = 200.0;
+
+    r = max(p.x - 4.65, length(p - vec2(4.65, -0.2)) - 0.5);
+    r = max(r, -(r + 0.125));
+    r = max(r, -box(p - vec2(4.8, -0.2), vec2(0.35, 0.2)));
+    r = max(r, -p.y - 0.2);
+    r = min(r, box(p - vec2(4.25, -0.15), vec2(0.2, 0.05)));
+    r = min(r, box(p - vec2(4.23, -0.3), vec2(0.05, 0.2)));
+    r = min(r, box(p - vec2(4.35, -0.5), vec2(0.3, 0.05)));
+
+    return r;
+}
+
+// Purpl
+float purpl(vec2 p) {
+    p.x += 1.15;
+    p.y += -0.2;
+    p /= 0.35;
+
+    float r = 200.0;
+
+    // P
+    r = min(r, max(-p.x + 1.9, length(p - vec2(1.9, -0.2)) - 0.5));
+    r = min(r, box(p - vec2(2.015, -0.8), vec2(0.1, 0.3)));
+
+    // U
+    r = min(r, box(p - vec2(2.5, -0.7), vec2(0.05, 0.4)));
+    r = min(r, box(p - vec2(2.6, -1.05), vec2(0.1, 0.05)));
+    r = min(r, box(p - vec2(2.7, -0.7), vec2(0.05, 0.4)));
+
+    // R
+    r = min(r, box(p - vec2(2.9, -0.85), vec2(0.05, 0.55)));
+    r = min(r, box((p - vec2(3.1, -1.)) * rotate(-acos(-1.) * -.2), vec2(.5, 0.05)));
+    r = min(r, box(p - vec2(3.05, -0.35), vec2(0.2, 0.05)));
+    r = min(r, box(p - vec2(3.05, -0.75), vec2(0.2, 0.05)));
+    r = min(r, box(p - vec2(3.2, -0.55), vec2(0.05, 0.15)));
+
+    // P
+    r = min(r, box(p - vec2(3.4, -0.65), vec2(0.05, 0.55)));
+    r = min(r, box(p - vec2(3.55, -0.35), vec2(0.2, 0.05)));
+    r = min(r, box(p - vec2(3.55, -0.75), vec2(0.2, 0.05)));
+    r = min(r, box(p - vec2(3.7, -0.55), vec2(0.05, 0.15)));
+
+    // L
+    r = min(r, box(p - vec2(3.9, -0.6), vec2(0.05, 0.3)));
+    r = min(r, box(p - vec2(4.15, -0.85), vec2(0.2, 0.05)));
+
+    return r;
+}
+
 vec4 pixel(vec2 p) {
     p /= resolution;
     vec2 q = p;
