@@ -319,12 +319,31 @@ vec4 pixel(vec2 p) {
     p -= .5;
     p.x *= resolution.x / resolution.y;
 
-    p.x += tan(p.y + time * .5 + 0.5 + cnoise(vec3(p * 2.5, time * 0.15))) * .01;
-    p.x += sin(p.x * 2. + time) * .2;
-
     float text = 2000.0;
 
-    if (time > 19.0) {
+    if (time > 35.0) {
+      float black = black(p);
+      float purpl = purpl(p);
+
+      purpl = min(purpl, mix(euro(p), gbp(p), floor(mod(time * 1.0, 2.0))));
+
+      float mixer = floor(mod(time * 2.0, 2.0));
+      // mixer = sin(time * 4.) + 0.5;
+
+      text = mix(black, purpl, mixer);
+
+      if (text > 0.0) {
+          // IN
+          q *= 1.01;
+          q -= 0.005;
+
+          return 0.01 + texture(channel0, q) * vec4(.7 + mod(-time, 1.) * .2, .5  + mod(time * 4., 1.) * .5, .8, 0.) * 1.25;
+      }
+    }
+    else if (time > 19.0) {
+      p.x += tan(p.y + time * .5 + 0.5 + cnoise(vec3(p * 2.5, time * 0.15))) * .01;
+      p.x += sin(p.x * 2. + time) * .2;
+
       p.y += tan(sin(p.x * .5) * .05 + time + 1.3) * .02;
 
       text = rohtie(p);
@@ -339,6 +358,9 @@ vec4 pixel(vec2 p) {
       }
     }
     else if (time > 17.0) {
+      p.x += tan(p.y + time * .5 + 0.5 + cnoise(vec3(p * 2.5, time * 0.15))) * .01;
+      p.x += sin(p.x * 2. + time) * .2;
+
       p.y += tan(sin(p.x * .5) * .05 + time + 1.3) * .02;
 
       text = rohtie(p);
@@ -353,6 +375,9 @@ vec4 pixel(vec2 p) {
       }
     }
     else {
+      p.x += tan(p.y + time * .5 + 0.5 + cnoise(vec3(p * 2.5, time * 0.15))) * .01;
+      p.x += sin(p.x * 2. + time) * .2;
+
       text = rohtie(p);
       text = min(text, dawgphaze(p));
       text = max(text, -p.y - time + 3.15 + sin(p.x * 20.) * .2);
