@@ -7,8 +7,8 @@
         },
         {
             "length": 59500,
-            "name": "Something",
-            "shader": 3
+            "name": "Clouds",
+            "shader": 2
         },
         {
             "length": 127000,
@@ -66,10 +66,12 @@
         {
             "channels": [
                 {
-                    "type": 0
+                    "shader": 2,
+                    "type": 2
                 },
                 {
-                    "type": 0
+                    "filename": "data/textures/11.jpg",
+                    "type": 1
                 },
                 {
                     "type": 0

@@ -322,8 +322,6 @@ vec4 pixel(vec2 p) {
     float text = 2000.0;
 
     if (time > 35.0) {
-      // p.y += tan(sin(p.x * .5) * .05 + time + 1.3) * .02;
-
       float black = black(p);
       float purpl = purpl(p);
 
@@ -334,15 +332,12 @@ vec4 pixel(vec2 p) {
 
       text = mix(black, purpl, mixer);
 
-      // text = rohtie(p);
-      // text = min(text, dawgphaze(p));
-
       if (text > 0.0) {
           // IN
           q *= 1.01;
           q -= 0.005;
 
-          return 0.01 + texture(channel0, q) * vec4(.7, .5, .8, 0.) * 1.25;
+          return 0.01 + texture(channel0, q) * vec4(.7 + mod(-time, 1.) * .2, .5  + mod(time * 4., 1.) * .5, .8, 0.) * 1.25;
       }
     }
     else if (time > 19.0) {

@@ -1,171 +1,165 @@
-vec4 pixel(vec2 p) {
-    p /= resolution;
-    p -= 0.5;
 
-    p.x *= resolution.x / resolution.y;
-    p.y += sin(p.x * 5.0 + time);
+vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+vec3 fade(vec3 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
 
-    float r = length(mod(p, 0.2)) -0.2;
-    r = smoothstep(0., 0.001, r);
+float cnoise(vec3 P){
+  vec3 Pi0 = floor(P); // Integer part for indexing
+  vec3 Pi1 = Pi0 + vec3(1.0); // Integer part + 1
+  Pi0 = mod(Pi0, 289.0);
+  Pi1 = mod(Pi1, 289.0);
+  vec3 Pf0 = fract(P); // Fractional part for interpolation
+  vec3 Pf1 = Pf0 - vec3(1.0); // Fractional part - 1.0
+  vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
+  vec4 iy = vec4(Pi0.yy, Pi1.yy);
+  vec4 iz0 = Pi0.zzzz;
+  vec4 iz1 = Pi1.zzzz;
 
-    return vec4(0.,0.,r,0.).brgr;
+  vec4 ixy = permute(permute(ix) + iy);
+  vec4 ixy0 = permute(ixy + iz0);
+  vec4 ixy1 = permute(ixy + iz1);
+
+  vec4 gx0 = ixy0 / 7.0;
+  vec4 gy0 = fract(floor(gx0) / 7.0) - 0.5;
+  gx0 = fract(gx0);
+  vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
+  vec4 sz0 = step(gz0, vec4(0.0));
+  gx0 -= sz0 * (step(0.0, gx0) - 0.5);
+  gy0 -= sz0 * (step(0.0, gy0) - 0.5);
+
+  vec4 gx1 = ixy1 / 7.0;
+  vec4 gy1 = fract(floor(gx1) / 7.0) - 0.5;
+  gx1 = fract(gx1);
+  vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
+  vec4 sz1 = step(gz1, vec4(0.0));
+  gx1 -= sz1 * (step(0.0, gx1) - 0.5);
+  gy1 -= sz1 * (step(0.0, gy1) - 0.5);
+
+  vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
+  vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
+  vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
+  vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
+  vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
+  vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
+  vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
+  vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
+
+  vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
+  g000 *= norm0.x;
+  g010 *= norm0.y;
+  g100 *= norm0.z;
+  g110 *= norm0.w;
+  vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));
+  g001 *= norm1.x;
+  g011 *= norm1.y;
+  g101 *= norm1.z;
+  g111 *= norm1.w;
+
+  float n000 = dot(g000, Pf0);
+  float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
+  float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
+  float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
+  float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
+  float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
+  float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
+  float n111 = dot(g111, Pf1);
+
+  vec3 fade_xyz = fade(Pf0);
+  vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
+  vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
+  float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);
+  return 2.2 * n_xyz;
 }
 
-// //
-// // SERENDIP banner
-// //
+float hash(float n) { return fract(sin(n) * 1e4); }
+float hash(vec2 p) { return fract(1e4 * sin(17.0 * p.x + p.y * 0.1) * (0.1 + abs(sin(p.y * 13.0 + p.x)))); }
 
-// // channel0 -> RGB noise
-// // channel1 -> Self
-// // channel2 -> Stone
+float smin( float a, float b, float k ) {
+    float h = max( k-abs(a-b), 0.0 )/k;
+    return min( a, b ) - h*h*k*(1.0/4.0);
+}
 
+mat2 rotate(float a) {
+  return mat2(-sin(a), cos(a),
+               cos(a), sin(a));
+}
 
-// float caps( vec3 p, vec3 a, vec3 b, float r ) {
-//     vec3 pa = p - a, ba = b - a;
-//     float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
-//     return length( pa - ba*h ) - r;
-// }
+float thingy(vec3 p) {
+  p.x *= 0.45;
 
-// float smin( float a, float b, float k ){
-//     float h = max( k-abs(a-b), 0.0 )/k;
-//     return min( a, b ) - h*h*h*k*(1.0/6.0);
-// }
+  p.xz *= rotate(p.y + time * .1);
 
-// mat2 rotate(float a) {
-//     return mat2(-sin(a), cos(a),
-//                  cos(a), sin(a));
-// }
+  p += sin(p.yzx * 5. + time * 5.) * .5;
+  p += sin(p.yzx * 20.) * .07;
+  // p += cos(p.yzx * 2.) * .2;
 
-// float map(vec3 p) {
-//     // p.xz *= rotate(acos(-1.));
-//     // p.xz *= rotate(time);
+  float r = length(p) - 1.25;
+  return r * 2.1;
+}
 
-//     float bevel = texture(channel2, p.xz * vec2(1., 2.)).r * 0.25;
+float map(vec3 p) {
+  float r = thingy(p);
 
-//     p.y += sin(p.x * 0.65 - time * 0.9);
-//     // p.y += sin(p.x * 0.65 + 1.);
+  // p.y += texture(channel1, p.xz * .02).r;
+  // p.y += cnoise(p * 1.5) * .5;
+  // p.y += cnoise(p) * .25;
+  // p.y += hash(p.xz) * .1;
 
-//     p.z = abs(p.z);
+  p.y += sin(p.x * .2 + time * .8) * .5;
+  p.y += 0.5 + sin(p.z * .2 + time * .8) * .2;
 
-//     float r = caps(p, vec3(-2.5, 0., 0.), vec3(2.5, 0., 0.), 0.25 + abs(sin(-1.5 + p.x * 0.6)) * 0.6 - abs(p.y) * 0.5);
+  return smin(r, p.y + 0.5, 1.5);
+}
 
-//     vec3 start = vec3(-1., 0.1, .5);
-//     vec3 end = vec3(-0.25, 0. + sin(time * 0.9), 1.);
+vec4 pixel(vec2 p) {
+  p /= resolution;
 
-//     r = smin(r, caps(p, start, end, 0.2), 0.5);
+  vec2 q = p;
 
-//     r = smin(r, caps(p, vec3(2.5, 0., 0.), vec3(3., 0., 1.), 0.05), 1.);
+  p -= 0.5;
+  p.x *= resolution.x / resolution.y;
 
-//     r -= bevel;
+  vec3 ray = vec3(p, -1.);
+  vec3 cam = vec3(-0.65, 0., 5.);
 
-//     return r * 0.7;
-// }
+  float dist = 0.;
 
-// vec4 pixel(vec2 p) {
-//     float time = time + 2500.0;
+  for (int i=0; i<75; i++) {
+      vec3 p = cam + ray * dist;
 
-//     p /= resolution;
-//     vec2 q = p;
-//     p -= .5;
-//     p.x *= resolution.x / resolution.y;
+      float tmp = map(p);
 
+      if (tmp < 0.001) {
+          vec3 light = vec3(tan(time) * 10., 5., 5.);
+          cam = p;
+          ray = normalize(light);
 
-//     vec3 ray = vec3(p, -1.);
-//     vec3 cam = vec3(0., 0., 5.);
+          float res = 1.;
+          dist = 1.;
 
-//     float dist = 0.;
+          for (int j=0; j<10; j++) {
+              p = cam + ray * dist;
 
-//     for (int i=0; i<100; i++) {
-//         vec3 p = cam + ray * dist;
+              float tmp = map(p);
 
-//         float tmp = map(p);
+              if (tmp < 0.001) {
+                  return (texture(channel0, q)) * vec4(p.x * .5, 0.5 + hash(p.xz), 1.0, 0.);
+                  break;
+              }
 
-//         if (tmp < 0.001) {
-//             // return vec4(dist * 0.05);
-//             // return vec4(1.);
-//             return (
-//                 texture(channel2, p.xz * vec2(1., 2.) - time * 0.2)
-//                 * vec4(0.6 - p.x + sin(p.y * 5.) * 0.3, 0.15, p.x * 0.6 + sin(p.y * 5.) * 0.3, 0.)
-//             );
-//         }
+              res = min(res, tmp/dist * 1.);
+          }
 
-//         dist += tmp;
-//     }
+          return vec4(res) * vec4(1. - p.y, 1.0 + hash(p.xz) * .4, 1., 0.);
+      }
 
+      dist += tmp;
 
+      if (dist > 20) {
+          break;
+      }
+  }
 
-//     p.x += tan(p.y * 2.);
-
-//     // p.y += texture(channel0, q * 1.).r * 0.1;
-//     // p.y += texture(channel0, q * 1.).r * 5.;
-//     p.y = abs(p.y) + sin(p.x + time);
-//     p.x += p.y * 20.;
-
-//     p.x += sin(p.y * 5. + time);
-//     p.y += tan(p.y * 2. - time * 2.);
-//     p.x += sin(p.y * 2. - tan(time * 10. * p.y * 15.));
-
-//     float r = length(p) - 0.25 + sin(time * 50.);
-//     r = 1. - r;
-
-//     if (r < 0.5) {
-//         q.x *= 0.99;
-//         return texture(channel1, q).bgrr * 1.01 + vec4(p.x * 2., p.y * .05, 0.01, 0.).bgrr;
-//     }
-
-//     return texture(channel0, p).brgr * 30.;
-
-
-
-
-
-//     // // p.y += texture(channel0, q * .05).r * 0.2;
-//     // // p.x += texture(channel0, q * .10).r * 0.2;
-//     // p.y += cos(time * 20.);
-//     // // p.x = abs(p.x) + sin(time * 20.);
-//     // // p.y = abs(p.y) - tan(time * 2.);
-
-
-//     // p += atan(p.x - tan(time * 5.), p.y + tan(time * 50.)) * 0.5;
-
-//     // // if (int(mod(time, 5.)) == 0) {
-//     // // }
-//     // p.x += sin(p.y * 20. * texture(channel0, vec2(0.2, 0.)).r + time * 5.) * .15;
-
-//     // p.x += tan(p.x * 1. + texture(channel0, vec2(0.01, 0.)).r * 10. + time * 5.);
-//     // p.y += tan(p.x * 10.);
-//     // p.x += sin(p.x * 23.5);
-//     // p.x += sin(p.y * 9.65 + time * 20.) * .5;
-//     // p.y += tan(p.x * 20. + time * 20.) * 0.2;
-
-
-//     // float r = length(max(abs(p) - 0.01 - texture(channel0, vec2(0.05, 0.)).r * .5, 0.)) - 0.01;
-//     // // r = smoothstep(0., 0.5, r);
-
-//     // if (r > 0.1) {
-//     //     // q *= 0.99;
-//     //     // q += 0.005;
-//     //     // q.y += 0.01;
-
-//     //     // return vec4(0.01, 0.1, 0.1, 0.) * 0.5;
-
-//     //     // p = q;
-//     //     // p -= 0.5;
-//     //     // p.x *= resolution.x / resolution.y;
-
-//     //     // float rep = 0.04;
-//     //     // p = mod(p, rep);
-//     //     // p -= rep * 0.5;
-
-//     //     // float dots = length(p) - 0.0001;
-//     //     // dots = smoothstep(0., 0.001, dots);
-//     //     // dots = 1. - dots;
-//     //     // dots *= 1. - length(q - 0.5) - 0.5;
-
-//     //     return texture(channel1, q) * vec4(0.92, .91, .96, 0.) * 0.9;// + dots * vec4(1., 1., 0., 0.);
-//     //     // return texture(channel1, q) * vec4(0.92, .91, .96, 0.);
-//     // }
-
-//     // // return vec4(r - tan(time * 50.), r - q.y * 0.5, abs(p.y) * 2., 0.).rgbb * 1.5 - texture(channel2, q * 10. + time * 25.) - p.y * 0.5;
-//     // return vec4(r - tan(time * 50.), r * (1. - q.y) * 7., abs(p.y) * 1.5, 0.).rgbb;// * 1.5;// - texture(channel2, q * 10. + time * 25.) - p.y * 0.5;
-// }
+  q.y -= 0.001;
+  return texture(channel0, q) * vec4(1.01, 1.0 + sin(time * 5.2) * .01, 0.95, 0.);
+}
