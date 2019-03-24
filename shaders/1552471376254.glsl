@@ -93,7 +93,7 @@ float thingy(vec3 p) {
   p += sin(p.yzx * 20.) * .07;
   // p += cos(p.yzx * 2.) * .2;
 
-  float r = length(p) - 1.25;
+  float r = length(p) - 1.25 + max((time - 67.) * .5, 0.);
   return r * 2.1;
 }
 

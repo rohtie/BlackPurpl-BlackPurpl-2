@@ -1,12 +1,17 @@
 {
     "scenes": [
         {
-            "length": 175500,
+            "length": 48104,
             "name": "Text intro",
             "shader": 3
         },
         {
-            "length": 59500,
+            "length": 5636,
+            "name": "text2clouds",
+            "shader": 5
+        },
+        {
+            "length": 301135,
             "name": "Clouds",
             "shader": 2
         },
@@ -130,6 +135,29 @@
                 }
             ],
             "id": "1552471411688"
+        },
+        {
+            "channels": [
+                {
+                    "shader": 5,
+                    "type": 2
+                },
+                {
+                    "shader": 3,
+                    "type": 2
+                },
+                {
+                    "shader": 2,
+                    "type": 2
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "id": "1553440123365"
         }
     ]
 }
