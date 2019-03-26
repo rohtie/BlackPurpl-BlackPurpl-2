@@ -319,7 +319,7 @@ vec4 pixel(vec2 p) {
       purpl = min(purpl, mix(euro(p), gbp(p), floor(mod(time * 1.0, 2.0))));
 
       float mixer = floor(mod(time * 2.0, 2.0));
-      // mixer = sin(time * 4.) + 0.5;
+      // mixer = mix(mixer, sin(time * 4.) + 0.5, min(max((time - 49.0) * 2.0, 0.), 1.));
 
       text = mix(black, purpl, mixer);
 
