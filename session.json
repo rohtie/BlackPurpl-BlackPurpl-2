@@ -1,22 +1,22 @@
 {
     "scenes": [
         {
-            "length": 48104,
+            "length": 53997,
             "name": "Text intro",
             "shader": 3
         },
         {
-            "length": 5636,
+            "length": 6040,
             "name": "text2clouds",
             "shader": 5
         },
         {
-            "length": 301135,
+            "length": 25004,
             "name": "Clouds",
             "shader": 2
         },
         {
-            "length": 127000,
+            "length": 396834,
             "name": "Pelvis rotation",
             "shader": 2
         },

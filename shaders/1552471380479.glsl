@@ -84,18 +84,9 @@ mat2 rotate(float a) {
                  cos(a), sin(a));
 }
 
-float map(vec3 p) {
-    float r = 10.;
-
-    return r;
-}
-
-float mic(float a) {
-    return texture(channel2, vec2(a, 0.)).r;
-}
-
-float signedMic(float a) {
-    return (texture(channel2, vec2(a, 0.)).r - 0.5) * 2.;
+float smin( float a, float b, float k ) {
+    float h = max( k-abs(a-b), 0.0 )/k;
+    return min( a, b ) - h*h*k*(1.0/4.0);
 }
 
 float box(vec2 p, vec2 b) {
@@ -357,37 +348,28 @@ vec4 pixel(vec2 p) {
           return texture(channel0, q) *= vec4(1.01, 1.01, 1.0, 0.) * .97;
       }
     }
-    else if (time > 17.0) {
-      p.x += tan(p.y + time * .5 + 0.5 + cnoise(vec3(p * 2.5, time * 0.15))) * .01;
-      p.x += sin(p.x * 2. + time) * .2;
-
-      p.y += tan(sin(p.x * .5) * .05 + time + 1.3) * .02;
-
-      text = rohtie(p);
-      text = min(text, dawgphaze(p));
-
-      if (text < 0.0) {
-          // IN
-          q *= 1.01;
-          q -= 0.005;
-
-          return 0.01 + texture(channel0, q) * vec4(.7, .5, .8, 0.) * 1.15;
-      }
-    }
     else {
       p.x += tan(p.y + time * .5 + 0.5 + cnoise(vec3(p * 2.5, time * 0.15))) * .01;
       p.x += sin(p.x * 2. + time) * .2;
 
+      float correction = (1.0 - min(max((time - 10.0) * .5, 0.), 1.));
+
       text = rohtie(p);
       text = min(text, dawgphaze(p));
-      text = max(text, -p.y - time + 3.15 + sin(p.x * 20.) * .2);
+      text = max(text, -p.y - time + 3.15 + sin(p.x * 20.) * .2) * correction;
+
+
+      text += sin(p.y * 20. + time * 4.) * .01;
+
 
       if (text < 0.0) {
           // IN
           q *= 1.01;
           q -= 0.005;
 
-          return 0.01 + texture(channel0, q) * vec4(.7, .5, .8, 0.) * 1.15;
+          q.x += sin(q.y * 10. + time * 2.) * correction;
+
+          return 0.01 + texture(channel0, q) * vec4(.7, .5, .8, 0.) * 1.19;
       }
     }
 
@@ -401,10 +383,10 @@ vec4 pixel(vec2 p) {
     r /= p.x;
 
     // EXPLODE
-    float explodeTime = max(time - 16.0, 0.);
-    r += tan(min(explodeTime, 20.) * explodeTime);
+    float explodeTime = max((time - 19.0), 0.);
+    r += tan(min(explodeTime * 1.25, 20.) * explodeTime);
 
-    return vec4(r + p.x * .01, r - abs(p.x * 0.25) * 1.2, r - (1. - q.y) * .25, 0.);
+    return vec4(r + p.x * .01 + mod(p.y * 2., 0.7) * sin(time * (0.2 + tan(time * .02))) * 1.5, r - abs(p.x * 0.25) * 1.2, r - (1. - q.y) * .25, 0.);
 
 }
 
