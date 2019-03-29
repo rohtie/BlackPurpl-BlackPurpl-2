@@ -21,9 +21,14 @@
             "shader": 1
         },
         {
-            "length": 451131,
+            "length": 17749,
             "name": "Cramping outro",
             "shader": 2
+        },
+        {
+            "length": 98251,
+            "name": "Underwater hiatus",
+            "shader": 6
         }
     ],
     "shaders": [
@@ -161,6 +166,29 @@
                 }
             ],
             "id": "1553440123365"
+        },
+        {
+            "channels": [
+                {
+                    "filename": "data/textures/hedge.png",
+                    "type": 1
+                },
+                {
+                    "shader": 6,
+                    "type": 2
+                },
+                {
+                    "filename": "data/textures/11.jpg",
+                    "type": 1
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "id": "1553871320123"
         }
     ]
 }
