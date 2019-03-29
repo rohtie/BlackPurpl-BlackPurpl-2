@@ -11,19 +11,19 @@
             "shader": 5
         },
         {
-            "length": 25004,
+            "length": 23628,
             "name": "Clouds",
             "shader": 2
         },
         {
-            "length": 396834,
-            "name": "Pelvis rotation",
-            "shader": 2
+            "length": 14579,
+            "name": "Hard strobe",
+            "shader": 1
         },
         {
-            "length": 67500,
+            "length": 451131,
             "name": "Cramping outro",
-            "shader": 4
+            "shader": 2
         }
     ],
     "shaders": [
@@ -51,13 +51,16 @@
         {
             "channels": [
                 {
-                    "type": 0
+                    "filename": "data/textures/8.jpg",
+                    "type": 1
                 },
                 {
-                    "type": 0
+                    "shader": 1,
+                    "type": 2
                 },
                 {
-                    "type": 0
+                    "shader": 2,
+                    "type": 2
                 },
                 {
                     "type": 0

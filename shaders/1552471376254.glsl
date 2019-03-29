@@ -150,7 +150,7 @@ vec4 pixel(vec2 p) {
               res = min(res, tmp/dist * 1.);
           }
 
-          return vec4(res) * vec4(1. - p.y, 1.0 + hash(p.xz) * .4, 1., 0.);
+          return vec4(res) * vec4(1. - p.y, 1.0 + hash(p.xz) * .4, 1. - abs(p.z * .45) * .2, 0.);
       }
 
       dist += tmp;
