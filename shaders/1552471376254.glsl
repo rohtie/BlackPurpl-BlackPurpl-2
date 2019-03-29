@@ -86,12 +86,12 @@ mat2 rotate(float a) {
 
 float thingy(vec3 p) {
   p.x *= 0.45;
+  // p.y += sin(time * .8);
 
   p.xz *= rotate(p.y + time * .1);
 
   p += sin(p.yzx * 5. + time * 5.) * .5;
   p += sin(p.yzx * 20.) * .07;
-  // p += cos(p.yzx * 2.) * .2;
 
   float r = length(p) - 1.25 + max((time - 67.) * .5, 0.);
   return r * 2.1;
@@ -143,7 +143,7 @@ vec4 pixel(vec2 p) {
               float tmp = map(p);
 
               if (tmp < 0.001) {
-                  return (texture(channel0, q)) * vec4(p.x * .5, 0.5 + hash(p.xz), 1.0, 0.);
+                  return (texture(channel0, q)) * vec4(1.1, 0.5 + hash(p.xz), 1.0, 0.);
                   break;
               }
 
