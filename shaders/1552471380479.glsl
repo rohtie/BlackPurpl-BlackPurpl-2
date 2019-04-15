@@ -158,7 +158,7 @@ float dawgphaze(vec2 p) {
     r = min(r, box(p - vec2(1.45, 0.1), vec2(0.05, 0.2)));
     r = min(r, box(p - vec2(1.65, -0.1), vec2(0.05, 0.4)));
     r = min(r, box(p - vec2(1.55, -0.15), vec2(0.15, 0.05)));
-    r = min(r, box(p - vec2(1.55, 0.15), vec2(0.15, 0.05)));
+    r = min(r, box(p - vec2(1.55, 0.3), vec2(0.15, 0.05)));
     r = min(r, box(p - vec2(1.45, -0.4), vec2(0.15, 0.1)));
 
 
@@ -167,8 +167,8 @@ float dawgphaze(vec2 p) {
     r = min(r, box(p - vec2(2.015, -0.8), vec2(0.1, 0.3)));
 
     // H
-    r = min(r, box(p - vec2(2.5, -0.4), vec2(0.05, 0.2)));
-    r = min(r, box(p - vec2(2.7, -0.15), vec2(0.05, 0.3)));
+    r = min(r, box(p - vec2(2.5, -0.4), vec2(0.05, 0.5)));
+    r = min(r, box(p - vec2(2.7, -0.3), vec2(0.05, 0.3)));
     r = min(r, box(p - vec2(2.6, -0.35), vec2(0.1, 0.05)));
 
     // A
