@@ -16,19 +16,29 @@
             "shader": 2
         },
         {
-            "length": 14579,
+            "length": 14079,
             "name": "Hard strobe",
             "shader": 1
         },
         {
-            "length": 17749,
+            "length": 9655,
             "name": "Cramping outro",
             "shader": 2
         },
         {
-            "length": 98251,
+            "length": 28635,
             "name": "Underwater hiatus",
             "shader": 6
+        },
+        {
+            "length": 36705,
+            "name": "Sick buddha",
+            "shader": 0
+        },
+        {
+            "length": 20000,
+            "name": "1555317864950",
+            "shader": 3
         }
     ],
     "shaders": [
@@ -189,6 +199,26 @@
                 }
             ],
             "id": "1553871320123"
+        },
+        {
+            "channels": [
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "id": "1555310674519"
         }
     ]
 }

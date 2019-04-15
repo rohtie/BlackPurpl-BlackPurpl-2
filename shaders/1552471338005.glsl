@@ -1,8 +1,3 @@
-// channel0: self
-// channel1: concrete
-// channel2: audio
-
-
 
 vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
 vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
@@ -79,229 +74,133 @@ float cnoise(vec3 P){
 float hash(float n) { return fract(sin(n) * 1e4); }
 float hash(vec2 p) { return fract(1e4 * sin(17.0 * p.x + p.y * 0.1) * (0.1 + abs(sin(p.y * 13.0 + p.x)))); }
 
+float smin( float a, float b, float k ) {
+    float h = max( k-abs(a-b), 0.0 )/k;
+    return min( a, b ) - h*h*k*(1.0/4.0);
+}
+
 mat2 rotate(float a) {
-    return mat2(-sin(a), cos(a),
-                 cos(a), sin(a));
+  return mat2(-sin(a), cos(a),
+               cos(a), sin(a));
+}
+
+float thingy(vec3 p) {
+  p.x *= 0.45;
+  // p.y += sin(time * .8);
+
+  p.xz *= rotate(p.y + time * .1);
+
+  p += sin(p.yzx * 5. + time * 5.) * .5;
+  p += sin(p.yzx * 20.) * .07;
+
+  float r = length(p) - 1.25 + max((time - 67.) * .5, 0.);
+  return r * 2.1;
+}
+
+float sphereField(vec3 p) {
+  float rep = 0.1;
+  p = mod(p, rep);
+  p -= rep * .75;
+
+  float r = length(p) - .005;
+  return r;
 }
 
 float map(vec3 p) {
-    float r = 10.;
+  // p.xz *= rotate(acos(-1.) * .75);
+  p.zy *= rotate(2.3);
+  p.xz *= rotate(-sin(time) - 1.5);
 
-    return r;
-}
+  p.x = abs(p.x);
 
-float mic(float a) {
-    return texture(channel2, vec2(a, 0.)).r;
-}
+  float r = 1000.;
 
-float signedMic(float a) {
-    return (texture(channel2, vec2(a, 0.)).r - 0.5) * 2.;
-}
+  // Head base
+  r = length(p) - 1.;
+  r = min(r, length(p - vec3(0., 1., 0.)) - .5);
 
-float box(vec2 p, vec2 b) {
-    return length(max(abs(p) - b, 0.)) - 0.01;
-}
+  // Body
+  r = min(r, length((p - vec3(0., -2.7, -1.)) * vec3(.3, 0.5, 1.)) - .5);
 
-float rohtie(vec2 p) {
-    p.x += 0.4;
-    p.y -= 0.25;
-    p /= 0.35;
+  r = smin(r, max(sphereField(p), r - .2), 0.35);
+  r = smin(r, length(p - vec3(0., -.75, 0.2)) - 1., 0.5);
 
-    float r = 22000.;
+  // Dot between eyes
+  r = min(r, (length(p - vec3(0., -0.05, 1.15)) - .15));
 
-    // R
-    r = min(r, box(p - vec2(0., 0.), vec2(0.05, 0.25)));
-    r = min(r, length(p - vec2(0.2, 0.15)) - 0.1);
+  // Eyes
+  r = max(r, -(length((p - vec3(.5, -.7 + p.x * .3, 1.1)) * vec3(1., .9, 1.)) - .2));
+  r = smin(r, (length((p - vec3(.5, -.72 + p.x * .3, 1.05)) * vec3(1., .9, 1.)) - .15), 0.1);
+  r = max(r, -(length((p - vec3(.5, -.78 + p.x * .37, 1.05)) * vec3(1., 1.1, 1.)) - .16));
+  r = smin(r, (length((p - vec3(.5, -.78 + p.x * .37, 1.0)) * vec3(1., 1.1, 1.)) - .12), 0.1);
 
-    // O
-    r = min(r, max(-(length(p - vec2(0.4, -0.1)) - 0.025), length(p - vec2(0.4, -0.1)) - 0.15));
+  // Nose
+  r = smin(r, (length((p - vec3(0., -0.8, 1.15 - p.y * .2)) * vec3(1.1, .6, 1.)) - .2), 0.4);
+  r = smin(r, (length((p - vec3(0.2, -1.0, 1.2)) * vec3(1., 1., 1.)) - .1), 0.1);
+  r = max(r, -(length((p - vec3(0.12, -1.1, 1.2)) * vec3(.8, 1., 1.)) - .1));
 
-    // H
-    r = min(r, box(p - vec2(0.5, 0.3), vec2(0.05, 0.2)));
-    r = min(r, box(p - vec2(0.7, 0.0), vec2(0.05, 0.3)));
-    r = min(r, box(p - vec2(0.6, 0.25), vec2(0.1, 0.05)));
+  // Chin
+  r = smin(r, (length((p - vec3(0., -1.5, .3 - p.y * .2)) * vec3(.7, .9, 1.)) - .3), 0.25);
 
-    // T
-    r = min(r, box(p - vec2(0.95, 0.0), vec2(0.05, 0.3)));
-    r = min(r, box(p - vec2(0.95, 0.15), vec2(0.15, 0.05)));
+  // Mouth
+  r = max(r, -(length((p - vec3(0.1, -1.4 - p.x * .3, 1.)) * vec3(.6, 1., 1.)) - .2));
+  r = smin(r, (length((p - vec3(0.0, -1.45 + p.x * .3 + sin(p.z * 8. + time * 7.) * .03 - p.z * .12, 1.)) * vec3(1., 4., 1.)) - .2), 0.2);
 
-    // I
-    r = min(r, box(p - vec2(1.2, -0.2), vec2(0.05, 0.3)));
-    r = min(r, length(p - vec2(1.2, 0.25)) - 0.075);
-
-    // E
-    r = min(r, max(-p.y, length(p - vec2(1.545, 0.)) - 0.25));
-    r = min(r, box(p - vec2(1.355, -0.1), vec2(0.05, 0.1)));
-    r = min(r, box(p - vec2(1.65, -0.15), vec2(0.25, 0.05)));
-
-    // +
-    r = min(r, box(p - vec2(2.8, -0.15), vec2(0.05, 0.3)));
-    r = min(r, box(p - vec2(2.8, -0.15), vec2(0.3, 0.05)));
-
-    return r;
-}
-
-float dawgphaze(vec2 p) {
-    p.x += 0.81;
-    p.y += 0.05;
-    p /= 0.35;
-
-    float r = 22000.;
-
-    // D
-    r = min(r, max(-p.x - .05, length(p - vec2(-0.05, 0.)) - 0.5));
-
-    // A
-    r = min(r, box(p - vec2(0.55, -0.15), vec2(0.05, 0.3)));
-    r = min(r, box(p - vec2(0.75, -0.15), vec2(0.05, 0.3)));
-    r = min(r, box(p - vec2(0.65, -0.15), vec2(0.15, 0.05)));
-    r = min(r, box(p - vec2(0.65, 0.15), vec2(0.15, 0.05)));
-
-    // W
-    r = min(r, box(p - vec2(.9, 0.), vec2(0.05, 0.3)));
-    r = min(r, box(p - vec2(1.1, 0.), vec2(0.05, 0.3)));
-    r = min(r, box(p - vec2(1.1, -0.2), vec2(0.2, 0.1)));
-    r = min(r, box(p - vec2(1.3, 0.), vec2(0.05, 0.3)));
-
-    // G
-    r = min(r, box(p - vec2(1.45, 0.1), vec2(0.05, 0.2)));
-    r = min(r, box(p - vec2(1.65, -0.1), vec2(0.05, 0.4)));
-    r = min(r, box(p - vec2(1.55, -0.15), vec2(0.15, 0.05)));
-    r = min(r, box(p - vec2(1.55, 0.15), vec2(0.15, 0.05)));
-    r = min(r, box(p - vec2(1.45, -0.4), vec2(0.15, 0.1)));
-
-
-    // P
-    r = min(r, max(-p.x + 1.9, length(p - vec2(1.9, -0.2)) - 0.5));
-    r = min(r, box(p - vec2(2.015, -0.8), vec2(0.1, 0.3)));
-
-    // H
-    r = min(r, box(p - vec2(2.5, -0.4), vec2(0.05, 0.2)));
-    r = min(r, box(p - vec2(2.7, -0.15), vec2(0.05, 0.3)));
-    r = min(r, box(p - vec2(2.6, -0.35), vec2(0.1, 0.05)));
-
-    // A
-    r = min(r, box(p - vec2(2.55 + 0.3, -0.05), vec2(0.05, 0.25)));
-    r = min(r, box(p - vec2(2.75 + 0.3, -0.05), vec2(0.05, 0.25)));
-    r = min(r, box(p - vec2(2.65 + 0.3, -0.15), vec2(0.15, 0.05)));
-    r = min(r, box(p - vec2(2.65 + 0.3,  0.15), vec2(0.15, 0.05)));
-
-    // Z
-    r = min(r, box(p - vec2(3.4, -0.05), vec2(0.3, 0.05)));
-    r = min(r, box((p - vec2(3.075, -0.55)) * rotate(-acos(-1.) * .275), vec2(.75, 0.05)));
-    r = min(r, box(p - vec2(3.425, -1.05), vec2(.95, 0.05)));
-
-    // E
-    r = min(r, box(p - vec2(3.9, -0.4), vec2(0.05, 0.4)));
-    r = min(r, box(p - vec2(4.05, -0.05), vec2(0.2, 0.05)));
-    r = min(r, box(p - vec2(3.9, -0.35), vec2(0.2, 0.05)));
-    r = min(r, box(p - vec2(4.2, -0.75), vec2(0.2, 0.05)));
-
-
-    return r;
+  return r;
 }
 
 vec4 pixel(vec2 p) {
-    p /= resolution;
-    vec2 q = p;
-    p -= .5;
-    p.x *= resolution.x / resolution.y;
+  p /= resolution;
 
+  vec2 q = p;
 
-    p.y += tan(sin(p.x * .5) * .05 + time) * .02;
+  p -= 0.5;
+  p.x *= resolution.x / resolution.y;
 
-    p.x += tan(p.y + time * .5 + 0.5 + cnoise(vec3(p * 2.5, time * 0.15))) * .01;
+  vec3 ray = vec3(p, -1.);
+  vec3 cam = vec3(-0.65, 0., 5.);
 
+  float dist = 0.;
 
-    float text = rohtie(p);
-    text = min(text, dawgphaze(p));
+  for (int i=0; i<75; i++) {
+      vec3 p = cam + ray * dist;
 
-    text -= max((30.5 - time * 4.5), 0.);
-    // text += max((0.5 - time * 0.15), 0.);
+      float tmp = map(p);
 
+      if (tmp < 0.001) {
+          vec3 light = vec3(tan(time) * 10., 5., 5.);
+          cam = p;
+          ray = normalize(light);
 
-    //  BlackPurpl€$BlackPurpl£ 2
+          float res = 1.;
+          dist = 1.;
 
+          for (int j=0; j<10; j++) {
+              p = cam + ray * dist;
 
+              float tmp = map(p);
 
-    // text = smoothstep(0., 0.001, text);
+              if (tmp < 0.001) {
+                  res = 0.02;
+                  // return (texture(channel0, q)) * vec4(1.1, 0.5 + hash(p.xz), 1.0, 0.);
+                  break;
+              }
 
-    // return vec4(text);
+              res = min(res, tmp/dist * 1.);
+          }
 
-    if (text < 0.0) {
-        // q.x = 1. - q.x;
-        // q.x += 0.1;
-        // q.x *= 0.999;
-        // return vec4(0.);
+          return vec4(res) * vec4(1. - p.y, 1.0 + hash(p.xz) * .4, 1. - abs(p.z * .45) * .2, 0.);
+      }
 
-        // IN
-        q *= 1.01;
-        q -= 0.005;
+      dist += tmp;
 
-        // OUT
-        // q /= 1.01;
-        // q += 0.005;
+      if (dist > 20) {
+          break;
+      }
+  }
 
-        return 0.01 + texture(channel0, q) * vec4(.7, .5, .8, 0.) * 1.15;
+  q.x -= 0.001 + p.x * .02;
+  q.y -= 0.001 + p.y * .02;
 
-        // return texture(channel0, q) *= vec4(1.01, 1.01, 1.0, 0.) * .97;
-    }
-
-    p += cnoise(vec3(p * 0.8, 1.5 + time * 0.012));
-    p += cnoise(vec3(p * 2.99, -13.15));
-    p += tan(p.x * 0.8);
-    p += hash(p) * .05;
-
-    float r = cnoise(vec3(p * 70., time * .75));
-    r += hash(p) * p.y;
-    r /= p.x;
-
-    // EXPLODE
-    // r += tan(time * 20.);
-
-    return vec4(r + p.x * .01, r - abs(p.x * 0.25) * 1.2, r - (1. - q.y) * .25, 0.);
-
+  return texture(channel0, q) * vec4(1.01, 1.0 + sin(time * 5.2) * .01, 0.95, 0.);
 }
-
-
-    // /* RAYMARCH */
-    // vec3 ray = vec3(p, -1.);
-    // vec3 cam = vec3(0., 0., 5.);
-
-    // float dist = 0.;
-
-    // for (int i=0; i<75; i++) {
-    //     vec3 p = cam + ray * dist;
-
-    //     float tmp = map(p);
-
-    //     if (tmp < 0.001) {
-    //         vec3 light = vec3(tan(time) * 10., 5., 5.);
-    //         cam = p;
-    //         ray = normalize(light);
-
-    //         float res = 1.;
-    //         dist = 1.;
-
-    //         for (int j=0; j<10; j++) {
-    //             p = cam + ray * dist;
-
-    //             float tmp = map(p);
-
-    //             if (tmp < 0.001) {
-    //                 res = 0.;
-    //                 break;
-    //             }
-
-    //             res = min(res, tmp/dist * 1.);
-    //         }
-
-    //         return vec4(res) * vec4(1., 1., 1., 0.) * cnoise(p * 20.);
-    //     }
-
-    //     dist += tmp;
-
-    //     if (dist > 20) {
-    //         break;
-    //     }
-    // }
