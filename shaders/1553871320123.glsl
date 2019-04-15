@@ -97,13 +97,17 @@ mat2 rotate(float a) {
 }
 
 float map(vec3 p) {
-    p.y += 0.5;
-    p.y += sin(p.x * 0.2 + time) * 0.6;
+
+    p.y += sin(p.x * 0.2 + time) * 1.26;
     p.y += sin(p.z * 0.1 + time * 0.2) * 0.5;
 
-    p.y += 0.5;
-    p.y += texture(channel2, p.xz * 0.0125 - time * 0.015).r * 0.9;
-    return p.y * 0.275;
+    p.y += 1.75;
+
+    p.y += cnoise(vec3(p.xz * 4. - time * 2., 0.)) * .2;
+
+
+    // p.y += texture(channel2, p.xz * 0.0125 - time * 0.015).r * 0.9;
+    return p.y * .175;
 }
 
 vec4 pixel(vec2 p) {
@@ -137,7 +141,8 @@ vec4 pixel(vec2 p) {
         if (tmp < 0.001) {
             return ((
                 vec4(dist * 0.2, dist * 0.9, dist * 0.2, 0.)
-                * texture(channel2, p.xz * 0.0125 - time * 0.015).r
+                // * p.y * 0.05
+                // * texture(channel2, p.xz * 0.0125 - time * 0.015).r
                 + vec4(p.z * 0.2, 0., -abs(sin(p.x) * 0.5), 0.)
             ) - p.z * 0.3) * 0.1 + vec4(p.z * 1., 0., abs(p.x), 0.) * 0.075;
         }
@@ -150,31 +155,17 @@ vec4 pixel(vec2 p) {
     }
 
 
-    // p.y += texture(channel0, q * .05).r * 0.2;
-    // p.x += time * 0.01;
-    // q += time * 0.4;
+    p.x += cnoise(vec3(q * 2. * rotate(time * 0.15) - time * 0.15, 0.)) * .6;
+    p.x += cnoise(vec3(q * 15. * rotate(time * 0.2) - time * 0.15, 0.)) * .4;
+    p.x += cnoise(vec3(q * 50. * rotate(time * 0.3) - time * 0.15, 0.)) * .4;
+    p.x += cnoise(vec3(q * 100. * rotate(time * 0.2) - time * 0.15, 0.)) * .3;
+    p.x += cnoise(vec3(q * 250. * rotate(time * 0.2) - time * 0.15, 0.)) * .5;
 
-    p.x += texture(channel0, q * .1 + time * 0.015).r * 0.6;
-    // p.y += cos(time * 20.);
-    // p.x = abs(p.x) + sin(time * 20.);
-    // p.y = abs(p.y) - tan(time * 2.);
-    p.x += texture(channel0, q * rotate(time * 0.15) - time * 0.15).r * 1.;
-
-
-    // p += atan(p.x - tan(time * 5.), p.y + tan(time * 50.)) * 0.5;
-
-    // if (int(mod(time, 5.)) == 0) {
-    // }
-    // p.x += sin(p.y * 20. * texture(channel0, vec2(0.2, 0.)).r + time * 5.) * .15;
-
-    p.x += tan(p.x * 1. + texture(channel0, vec2(0.01, 0.)).r * 10. + time * 5.);
-    // p.y += tan(p.x * 10.);
-    p.x += sin(p.x * 23.5);
+    p.x += tan(p.x * 1.28 + time * 5.);
     p.x += sin(p.y * 9.65 + time * 20.) * .5;
-    // p.y += tan(p.x * 20. + time * 20.) * 0.2;
 
 
-    float r = length(max(abs(p) - 0.01 - texture(channel0, vec2(0.05, 0.)).r * .5, 0.)) - 0.01;
+    float r = length(max(abs(p) - 0.3, 0.)) - 0.01;
 
     if (r > 0.8) {
         q.y -= 0.001;
@@ -182,7 +173,7 @@ vec4 pixel(vec2 p) {
     }
 
     return (
-        vec4(r - tan(time * 2.), r - q.y * 0.5, abs(p.y) * 2., 0.) * 0.75 + q.y * 0.5
+        vec4(r - tan(time * 4.), r - q.y * 0.5, abs(p.y) * 2., 0.) * 0.75 + q.y * 0.5
     ) * abs(p.x * 1.);
 
     // return vec4(r - tan(time * 50.), r * (1. - q.y) * 7., abs(p.y) * 1.5, 0.).rgbb;// * 1.5;// - texture(channel2, q * 10. + time * 25.) - p.y * 0.5;
