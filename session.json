@@ -26,19 +26,44 @@
             "shader": 2
         },
         {
-            "length": 28635,
+            "length": 28139,
             "name": "Underwater hiatus",
             "shader": 6
         },
         {
-            "length": 36705,
+            "length": 16701,
             "name": "Sick buddha",
             "shader": 0
         },
         {
-            "length": 20000,
-            "name": "1555317864950",
+            "length": 7948,
+            "name": "BLACK/PURPL",
             "shader": 3
+        },
+        {
+            "length": 8663,
+            "name": "SICK / PURPL TRANSITIOn",
+            "shader": 8
+        },
+        {
+            "length": 5240,
+            "name": "1555319354062",
+            "shader": 9
+        },
+        {
+            "length": 12787,
+            "name": "SICK BDDHA",
+            "shader": 0
+        },
+        {
+            "length": 5857,
+            "name": "BLACKPURPL",
+            "shader": 3
+        },
+        {
+            "length": 10046,
+            "name": "black to buddha trans",
+            "shader": 7
         }
     ],
     "shaders": [
@@ -203,13 +228,16 @@
         {
             "channels": [
                 {
-                    "type": 0
+                    "shader": 7,
+                    "type": 2
                 },
                 {
-                    "type": 0
+                    "shader": 3,
+                    "type": 2
                 },
                 {
-                    "type": 0
+                    "shader": 0,
+                    "type": 2
                 },
                 {
                     "type": 0
@@ -219,6 +247,52 @@
                 }
             ],
             "id": "1555310674519"
+        },
+        {
+            "channels": [
+                {
+                    "shader": 8,
+                    "type": 2
+                },
+                {
+                    "shader": 3,
+                    "type": 2
+                },
+                {
+                    "shader": 0,
+                    "type": 2
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "id": "1555318970604"
+        },
+        {
+            "channels": [
+                {
+                    "shader": 9,
+                    "type": 2
+                },
+                {
+                    "shader": 1,
+                    "type": 2
+                },
+                {
+                    "shader": 0,
+                    "type": 2
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "id": "1555319361188"
         }
     ]
 }

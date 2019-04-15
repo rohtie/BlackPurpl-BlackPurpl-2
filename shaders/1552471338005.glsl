@@ -107,9 +107,22 @@ float sphereField(vec3 p) {
 }
 
 float map(vec3 p) {
-  // p.xz *= rotate(acos(-1.) * .75);
+
+
+  float spinTime = clamp((time - 177.5) * 200., 0., 1.);
+  float slowSpinTime = (time - 177.5) * .000025;
+  slowSpinTime *= 1. + clamp(time - 182., 0., 1.) * 10.;
+
   p.zy *= rotate(2.3);
-  p.xz *= rotate(-sin(time) - 1.5);
+  p.xz *= rotate(-sin(time) * (1. - spinTime) - 1.5);
+
+
+  p.xz = mix(p.xz, p.xz * rotate(2.4 + p.y * 10000. * slowSpinTime - time * slowSpinTime * 2.), spinTime);
+
+  // p.xz *= rotate(p.y * 1000. * slowSpinTime);
+
+  // p.xz *= mix(mat2(0., 1., 1., 0.), mat2(1., 0., 1., 0.), max(1., (time - 180.)));
+  // p.xz *= rotate(p.y * 0.5 + time * .2);
 
   p.x = abs(p.x);
 
@@ -202,5 +215,5 @@ vec4 pixel(vec2 p) {
   q.x -= 0.001 + p.x * .02;
   q.y -= 0.001 + p.y * .02;
 
-  return texture(channel0, q) * vec4(1.01, 1.0 + sin(time * 5.2) * .01, 0.95, 0.);
+  return texture(channel0, q) * vec4(1.01, 1.0 + sin(time * 5.2) * .01, 0.95, 0.) *  (1. - clamp((time - 178.) * .05, 0., 1.0));
 }

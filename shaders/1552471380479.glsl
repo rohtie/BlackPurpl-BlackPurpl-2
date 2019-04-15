@@ -312,25 +312,6 @@ vec4 pixel(vec2 p) {
 
     float text = 2000.0;
 
-    if (time > 100.0) {
-      float black = black(p);
-      float purpl = purpl(p);
-
-      purpl = min(purpl, mix(euro(p), gbp(p), floor(mod(time * 1.0, 2.0))));
-
-      float mixer = floor(mod(time * 2.0, 2.0));
-      mixer = mix(mixer, sin(time), 0.);
-
-      text = mix(black, purpl, mixer);
-
-      if (text > 0.0) {
-          // IN
-          q *= 1.01;
-          q -= 0.005;
-
-          return 0.01 + texture(channel0, q) * vec4(.7 + mod(-time, 1.) * .2, .5  + mod(time * 4., 1.) * .5, .8, 0.) * 1.25;
-      }
-    }
     if (time > 35.0) {
       float black = black(p);
       float purpl = purpl(p);
@@ -338,7 +319,7 @@ vec4 pixel(vec2 p) {
       purpl = min(purpl, mix(euro(p), gbp(p), floor(mod(time * 1.0, 2.0))));
 
       float mixer = floor(mod(time * 2.0, 2.0));
-      // mixer = mix(mixer, sin(time * 4.) + 0.5, min(max((time - 49.0) * 2.0, 0.), 1.));
+      mixer = mix(mixer, sin(time * 8.) + 0.5, min(max((time - 100.0) * 2.0, 0.), 1.));
 
       text = mix(black, purpl, mixer);
 
