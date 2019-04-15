@@ -11,17 +11,17 @@
             "shader": 5
         },
         {
-            "length": 23628,
+            "length": 22730,
             "name": "Clouds",
             "shader": 2
         },
         {
-            "length": 14079,
+            "length": 11061,
             "name": "Hard strobe",
             "shader": 1
         },
         {
-            "length": 9655,
+            "length": 13571,
             "name": "Cramping outro",
             "shader": 2
         },
@@ -51,19 +51,19 @@
             "shader": 9
         },
         {
-            "length": 12787,
+            "length": 9486,
             "name": "SICK BDDHA",
             "shader": 0
         },
         {
-            "length": 5857,
-            "name": "BLACKPURPL",
-            "shader": 3
-        },
-        {
-            "length": 10046,
+            "length": 10098,
             "name": "black to buddha trans",
             "shader": 7
+        },
+        {
+            "length": 9106,
+            "name": "BLACKPURPL",
+            "shader": 3
         }
     ],
     "shaders": [

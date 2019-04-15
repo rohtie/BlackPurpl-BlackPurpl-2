@@ -4,7 +4,7 @@ vec4 pixel(vec2 p) {
     p -= 0.5;
     p.x *= resolution.x / resolution.y;
 
-    float mixer = min((time - 190.) * .1, 1.);
+    float mixer = min((time - 184.) * .1, 1.);
 
     vec2 text = q;
     text.y += texture(channel2, q).r * mixer * 5.;

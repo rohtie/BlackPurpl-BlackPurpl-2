@@ -101,13 +101,18 @@ float map(vec3 p) {
     p.y += sin(p.x * 0.2 + time) * 1.26;
     p.y += sin(p.z * 0.1 + time * 0.2) * 0.5;
 
-    p.y += 1.75;
+    float superTime = clamp((time - 116.) * .1, 0., 5.0);
+    float extraTime = max(0., (time - 122.) * 10.);
+
+    p.y += tan(p.z * 5.) * superTime * (1. + extraTime * .005);
+
+    p.y += 1.75 + superTime * 6.;
 
     p.y += cnoise(vec3(p.xz * 4. - time * 2., 0.)) * .2;
 
 
     // p.y += texture(channel2, p.xz * 0.0125 - time * 0.015).r * 0.9;
-    return p.y * .175;
+    return p.y * .2;
 }
 
 vec4 pixel(vec2 p) {
@@ -141,8 +146,8 @@ vec4 pixel(vec2 p) {
         if (tmp < 0.001) {
             return ((
                 vec4(dist * 0.2, dist * 0.9, dist * 0.2, 0.)
-                // * p.y * 0.05
-                // * texture(channel2, p.xz * 0.0125 - time * 0.015).r
+                * cnoise(vec3(p.xz * 0.1 + time * .5, 0.)) * 5.
+
                 + vec4(p.z * 0.2, 0., -abs(sin(p.x) * 0.5), 0.)
             ) - p.z * 0.3) * 0.1 + vec4(p.z * 1., 0., abs(p.x), 0.) * 0.075;
         }
@@ -156,10 +161,10 @@ vec4 pixel(vec2 p) {
 
 
     p.x += cnoise(vec3(q * 2. * rotate(time * 0.15) - time * 0.15, 0.)) * .6;
-    p.x += cnoise(vec3(q * 15. * rotate(time * 0.2) - time * 0.15, 0.)) * .4;
-    p.x += cnoise(vec3(q * 50. * rotate(time * 0.3) - time * 0.15, 0.)) * .4;
-    p.x += cnoise(vec3(q * 100. * rotate(time * 0.2) - time * 0.15, 0.)) * .3;
-    p.x += cnoise(vec3(q * 250. * rotate(time * 0.2) - time * 0.15, 0.)) * .5;
+    p.x += cnoise(vec3(q * 15. * rotate(time * 0.2) - time * 0.15, 0.)) * .1;
+    p.x += cnoise(vec3(q * 20. * rotate(time * 0.3) - time * 0.15, 0.)) * .35;
+    p.x += cnoise(vec3(q * 50. * rotate(time * 0.2) - time * 0.15, 0.)) * .23;
+    p.x += cnoise(vec3(q * 2000. * rotate(time * 0.2) - time * 0.15, 0.)) * .3;
 
     p.x += tan(p.x * 1.28 + time * 5.);
     p.x += sin(p.y * 9.65 + time * 20.) * .5;
