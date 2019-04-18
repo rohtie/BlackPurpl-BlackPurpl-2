@@ -16,12 +16,12 @@
             "shader": 2
         },
         {
-            "length": 11061,
+            "length": 8864,
             "name": "Hard strobe",
             "shader": 1
         },
         {
-            "length": 13571,
+            "length": 15768,
             "name": "Cramping outro",
             "shader": 2
         },
@@ -31,39 +31,39 @@
             "shader": 6
         },
         {
-            "length": 16701,
+            "length": 7779,
             "name": "Sick buddha",
             "shader": 0
         },
         {
-            "length": 7948,
+            "length": 2812,
             "name": "BLACK/PURPL",
             "shader": 3
         },
         {
-            "length": 8663,
-            "name": "SICK / PURPL TRANSITIOn",
-            "shader": 8
-        },
-        {
-            "length": 5240,
+            "length": 4032,
             "name": "1555319354062",
             "shader": 9
         },
         {
-            "length": 9486,
+            "length": 7804,
             "name": "SICK BDDHA",
             "shader": 0
         },
         {
-            "length": 10098,
+            "length": 76724,
             "name": "black to buddha trans",
-            "shader": 7
+            "shader": 4
         },
         {
-            "length": 9106,
+            "length": 19613,
+            "name": "SICK / PURPL TRANSITIOn",
+            "shader": 8
+        },
+        {
+            "length": 13997,
             "name": "BLACKPURPL",
-            "shader": 3
+            "shader": 4
         }
     ],
     "shaders": [
@@ -91,22 +91,24 @@
         {
             "channels": [
                 {
-                    "filename": "data/textures/8.jpg",
-                    "type": 1
-                },
-                {
                     "shader": 1,
                     "type": 2
                 },
                 {
-                    "shader": 2,
-                    "type": 2
+                    "filename": "data/textures/bingo.png",
+                    "type": 1
                 },
                 {
-                    "type": 0
+                    "filename": "data/textures/bingo.png",
+                    "type": 1
                 },
                 {
-                    "type": 0
+                    "filename": "data/textures/bingo.png",
+                    "type": 1
+                },
+                {
+                    "filename": "data/textures/bingo.png",
+                    "type": 1
                 }
             ],
             "id": "1552471374527"
@@ -138,6 +140,18 @@
                 {
                     "shader": 3,
                     "type": 2
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
                 }
             ],
             "id": "1552471380479"
@@ -145,8 +159,20 @@
         {
             "channels": [
                 {
-                    "shader": 3,
+                    "shader": 4,
                     "type": 2
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
                 }
             ],
             "id": "1552471411688"
@@ -177,22 +203,24 @@
         {
             "channels": [
                 {
-                    "filename": "data/textures/hedge.png",
-                    "type": 1
-                },
-                {
                     "shader": 6,
                     "type": 2
                 },
                 {
-                    "filename": "data/textures/11.jpg",
+                    "filename": "data/textures/bingo.png",
                     "type": 1
                 },
                 {
-                    "type": 0
+                    "filename": "data/textures/bingo.png",
+                    "type": 1
                 },
                 {
-                    "type": 0
+                    "filename": "data/textures/bingo.png",
+                    "type": 1
+                },
+                {
+                    "filename": "data/textures/bingo.png",
+                    "type": 1
                 }
             ],
             "id": "1553871320123"

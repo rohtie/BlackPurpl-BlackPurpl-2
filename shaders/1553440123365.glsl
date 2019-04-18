@@ -9,5 +9,5 @@ vec4 pixel(vec2 p) {
     vec2 text = q;
     text.x += texture(channel2, q).r * mixer;
 
-    return mix(texture(channel1, text) / texture(channel2, q), texture(channel2, q), mixer * 2.);
+    return mix(texture(channel1, text) / texture(channel2, q) * vec4(p.y + 0.32), texture(channel2, q), mixer * 2.);
 }
