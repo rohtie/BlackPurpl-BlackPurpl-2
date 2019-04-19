@@ -11,12 +11,12 @@
             "shader": 5
         },
         {
-            "length": 26290,
+            "length": 28201,
             "name": "Clouds",
             "shader": 2
         },
         {
-            "length": 7465,
+            "length": 5554,
             "name": "Hard strobe",
             "shader": 4
         },
@@ -46,29 +46,34 @@
             "shader": 9
         },
         {
-            "length": 7976,
+            "length": 7891,
             "name": "SICK BDDHA",
             "shader": 0
         },
         {
-            "length": 2933,
+            "length": 3542,
             "name": "SICK / PURPL TRANSITIOn",
-            "shader": 8
+            "shader": 3
         },
         {
-            "length": 19695,
+            "length": 11012,
             "name": "black to buddha trans",
             "shader": 4
         },
         {
-            "length": 5633,
-            "name": "1555658538134",
-            "shader": 3
+            "length": 5280,
+            "name": "blackpurpl on transbud",
+            "shader": 8
         },
         {
-            "length": 92652,
+            "length": 20081,
             "name": "WHALES",
             "shader": 10
+        },
+        {
+            "length": 41706,
+            "name": "DAWG ending",
+            "shader": 3
         }
     ],
     "shaders": [
@@ -307,7 +312,8 @@
                     "type": 2
                 },
                 {
-                    "type": 0
+                    "shader": 3,
+                    "type": 2
                 },
                 {
                     "type": 0

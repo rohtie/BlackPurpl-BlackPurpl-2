@@ -1,17 +1,3 @@
-
-float thingy(vec3 p) {
-  p.x *= 0.45;
-  // p.y += sin(time * .8);
-
-  p.xz *= rotate(p.y + time * .1);
-
-  p += sin(p.yzx * 5. + time * 5.) * .5;
-  p += sin(p.yzx * 20.) * .07;
-
-  float r = length(p) - 1.25 + max((time - 67.) * .5, 0.);
-  return r * 2.1;
-}
-
 float sphereField(vec3 p) {
   float rep = 0.1;
   p = mod(p, rep);
@@ -36,11 +22,6 @@ float map(vec3 p) {
 
 
   p.xz = mix(p.xz, p.xz * rotate(2.4 + p.y * 10000. * slowSpinTime - time * slowSpinTime * 2.), spinTime);
-
-  // p.xz *= rotate(p.y * 1000. * slowSpinTime);
-
-  // p.xz *= mix(mat2(0., 1., 1., 0.), mat2(1., 0., 1., 0.), max(1., (time - 180.)));
-  // p.xz *= rotate(p.y * 0.5 + time * .2);
 
   p.x = abs(p.x);
 
@@ -113,7 +94,6 @@ vec4 pixel(vec2 p) {
 
               if (tmp < 0.001) {
                   res = 0.02;
-                  // return (texture(channel0, q)) * vec4(1.1, 0.5 + hash(p.xz), 1.0, 0.);
                   break;
               }
 

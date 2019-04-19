@@ -1,3 +1,5 @@
+float vomitTime = clamp((time - 164.) * .8, 0., 1.);
+
 
 float thingy(vec3 p) {
   p.x *= 0.45;
@@ -23,10 +25,7 @@ float sphereField(vec3 p) {
 
 float map(vec3 p) {
 
-
-  float vomitTime = clamp((time - 164.) * .8, 0., 1.);
-
-  p.xz *= rotate(acos(-1.) * 1.5 + sin(time * 55.) * .01);
+  p.xz *= rotate(acos(-1.) * 1.5 + sin(time * 55.) * .02);
   p.zy *= rotate(acos(-1.) * 0.5 - vomitTime);
 
   p.x = abs(p.x);
@@ -62,7 +61,7 @@ float map(vec3 p) {
   r = max(r, -(length((p - vec3(0.1, -1.4 - p.x * .3, 1.)) * vec3(.9, 1., 1.)) - .2));
   r = smin(r, (length((p - vec3(0.0, -1.45 + p.x * .3 + sin(p.z * 8. + time * 7.) * .03 - p.z * .12, 1.)) * vec3(1.6, 4., 1.)) - .2), 0.2 + (1. - vomitTime));
 
-  return r - max(0., (time - 169.5) * .2);
+  return r - max(0., (time - 167.5) * .2);
 }
 
 vec4 pixel(vec2 p) {
@@ -73,8 +72,9 @@ vec4 pixel(vec2 p) {
   p -= 0.5;
   p.x *= resolution.x / resolution.y;
 
+
   vec3 ray = vec3(p, -1.);
-  vec3 cam = vec3(-0.65, 0., 5.);
+  vec3 cam = vec3(-.65, 0., 5.);
 
   float dist = 0.;
 
@@ -96,9 +96,8 @@ vec4 pixel(vec2 p) {
 
               float tmp = map(p);
 
-              if (tmp < 0.001) {
-                  res = 0.02;
-                  // return (texture(channel0, q)) * vec4(1.1, 0.5 + hash(p.xz), 1.0, 0.);
+              if (tmp < .001) {
+                  res = .02;
                   break;
               }
 
@@ -114,8 +113,6 @@ vec4 pixel(vec2 p) {
           break;
       }
   }
-
-  float vomitTime = clamp((time - 165.) * 1.8, 0., 1.);
 
   q.x -= (0.0001 + p.x * .02) * (0.1 + vomitTime);
   q.y -= (0.0001 + p.y * .02) * (0.1 + vomitTime);

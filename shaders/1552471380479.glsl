@@ -7,7 +7,7 @@ float rohtie(vec2 p) {
     p.y -= 0.25;
     p /= 0.35;
 
-    float r = 22000.;
+    float r = 420.;
 
     // R
     r = min(r, box(p - vec2(0., 0.), vec2(0.05, 0.25)));
@@ -46,7 +46,7 @@ float dawgphaze(vec2 p) {
     p.y += 0.05;
     p /= 0.35;
 
-    float r = 22000.;
+    float r = 420.;
 
     // D
     r = min(r, max(-p.x - .05, length(p - vec2(-0.05, 0.)) - 0.5));
@@ -107,7 +107,7 @@ float black(vec2 p) {
     p.y += -0.25;
     p /= 0.35;
 
-    float r = 200.0;
+    float r = 420.0;
 
     // B
     r = min(r, max(-p.x + 1.9, length(p - vec2(1.9, -0.2)) - 0.5));
@@ -145,7 +145,7 @@ float euro(vec2 p) {
 
     p /= 0.35;
 
-    float r = 200.0;
+    float r = 420.0;
 
     r = max(p.x - 4.45, length(p - vec2(4.45, -0.2)) - 0.5);
     r = max(r, -(r + 0.15));
@@ -163,7 +163,7 @@ float gbp(vec2 p) {
 
     p /= 0.35;
 
-    float r = 200.0;
+    float r = 420.0;
 
     r = max(p.x - 4.65, length(p - vec2(4.65, -0.2)) - 0.5);
     r = max(r, -(r + 0.125));
@@ -182,7 +182,7 @@ float purpl(vec2 p) {
     p.y += -0.2;
     p /= 0.35;
 
-    float r = 200.0;
+    float r = 420.0;
 
     // P
     r = min(r, max(-p.x + 1.9, length(p - vec2(1.9, -0.2)) - 0.5));
@@ -219,9 +219,40 @@ vec4 pixel(vec2 p) {
     p -= .5;
     p.x *= resolution.x / resolution.y;
 
-    float text = 2000.0;
+    float text = 420.0;
 
-    if (time > 35.0) {
+
+    if (time > 198.0) {
+        text = dawgphaze(p - vec2(0., 0.16));
+
+      if (text > 0.0) {
+          // IN
+          q *= 1.02;
+          q -= 0.01;
+
+          return 0.01 + texture(channel0, q) * vec4(.7 + mod(-time, 1.) * .2, .5  + mod(time * 4., 1.) * .6, .2, 0.) * 1.1;
+      }
+    }
+    else if (time > 35.0) {
+      float black = black(p);
+      float purpl = purpl(p);
+
+      purpl = min(purpl, mix(euro(p), gbp(p), floor(mod(time * 1.0, 2.0))));
+
+      float mixer = floor(mod(time * 2.0, 2.0));
+      mixer = mix(mixer, sin(time * 8.) + 0.5, min(max((time - 100.0) * 2.0, 0.), 1.));
+
+      text = mix(black, purpl, mixer);
+
+      if (text > 0.0) {
+          // IN
+          q *= 1.01;
+          q -= 0.005;
+
+          return 0.01 + texture(channel0, q) * vec4(.7 + mod(-time, 1.) * .2, .5  + mod(time * 4., 1.) * .5, .8, 0.) * 1.25;
+      }
+    }
+    else if (time > 35.0) {
       float black = black(p);
       float purpl = purpl(p);
 
@@ -267,7 +298,6 @@ vec4 pixel(vec2 p) {
       text = min(text, dawgphaze(p));
       text = max(text, -p.y - time + 3.15 + sin(p.x * 20.) * .2) * correction;
 
-
       text += sin(p.y * 20. + time * 4.) * .01;
 
 
@@ -298,46 +328,3 @@ vec4 pixel(vec2 p) {
     return vec4(r + p.x * .01 + mod(p.y * 2., 0.7) * sin(time * (0.2 + tan(time * .02))) * 1.5, r - abs(p.x * 0.25) * 1.2, r - (1. - q.y) * .25, 0.);
 
 }
-
-
-    // /* RAYMARCH */
-    // vec3 ray = vec3(p, -1.);
-    // vec3 cam = vec3(0., 0., 5.);
-
-    // float dist = 0.;
-
-    // for (int i=0; i<75; i++) {
-    //     vec3 p = cam + ray * dist;
-
-    //     float tmp = map(p);
-
-    //     if (tmp < 0.001) {
-    //         vec3 light = vec3(tan(time) * 10., 5., 5.);
-    //         cam = p;
-    //         ray = normalize(light);
-
-    //         float res = 1.;
-    //         dist = 1.;
-
-    //         for (int j=0; j<10; j++) {
-    //             p = cam + ray * dist;
-
-    //             float tmp = map(p);
-
-    //             if (tmp < 0.001) {
-    //                 res = 0.;
-    //                 break;
-    //             }
-
-    //             res = min(res, tmp/dist * 1.);
-    //         }
-
-    //         return vec4(res) * vec4(1., 1., 1., 0.) * cnoise(p * 20.);
-    //     }
-
-    //     dist += tmp;
-
-    //     if (dist > 20) {
-    //         break;
-    //     }
-    // }

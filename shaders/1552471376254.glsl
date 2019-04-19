@@ -1,7 +1,6 @@
 
 float thingy(vec3 p) {
   p.x *= 0.45;
-  // p.y += sin(time * .8);
 
   p.xz *= rotate(p.y + time * .1);
 
@@ -14,11 +13,6 @@ float thingy(vec3 p) {
 
 float map(vec3 p) {
   float r = thingy(p);
-
-  // p.y += texture(channel1, p.xz * .02).r;
-  // p.y += cnoise(p * 1.5) * .5;
-  // p.y += cnoise(p) * .25;
-  // p.y += hash(p.xz) * .1;
 
   p.y += sin(p.x * .2 + time * .8) * .5;
   p.y += 0.5 + sin(p.z * .2 + time * .8) * .2;
@@ -59,7 +53,6 @@ vec4 pixel(vec2 p) {
 
               if (tmp < 0.001) {
                   return (texture(channel0, q)) * vec4(1.1, 0.5 + hash(p.xz), 1.0, 0.);
-                  break;
               }
 
               res = min(res, tmp/dist * 1.);
@@ -76,5 +69,6 @@ vec4 pixel(vec2 p) {
   }
 
   q.y -= 0.001;
+
   return texture(channel0, q) * vec4(1.01, 1.0 + sin(time * 5.2) * .01, 0.95, 0.);
 }
