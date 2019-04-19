@@ -4,10 +4,11 @@ vec4 pixel(vec2 p) {
     p -= 0.5;
     p.x *= resolution.x / resolution.y;
 
-    float mixer = min((time - 147.) * .1, 1.);
+    float mixer = clamp(time - 160., 0., 1.0);
+
 
     vec2 text = q;
-    text.x += texture(channel2, q).r * mixer;
+    // text.x += texture(channel2, q).r * mixer;
 
-    return mix(texture(channel1, text) * texture(channel2, text) - texture(channel2, q), texture(channel2, q) * 2., mixer * 15.);
+    return mix(texture(channel1, text), texture(channel2, q), mixer * 15.);
 }

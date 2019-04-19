@@ -24,7 +24,7 @@ float sphereField(vec3 p) {
 float map(vec3 p) {
 
 
-  float vomitTime = clamp((time - 160.) * .8, 0., 1.);
+  float vomitTime = clamp((time - 164.) * .8, 0., 1.);
 
   p.xz *= rotate(acos(-1.) * 1.5 + sin(time * 55.) * .01);
   p.zy *= rotate(acos(-1.) * 0.5 - vomitTime);
@@ -37,7 +37,8 @@ float map(vec3 p) {
   r = min(r, length((p - vec3(0., 1., 0.))  * vec3(.3, 0.35, 1.)) - .3);
 
   // Body
-  r = min(r, length((p - vec3(0., -2.7, -1.)) * vec3(.25, 0.5, 1.)) - .5);
+  vec3 bodyPos = p;
+  r = min(r, length((bodyPos - vec3(0., -2.7, -1.)) * vec3(.25, 0.5, 1.)) - .5);
   r = smin(r, max(sphereField(p), r - .5), 0.6);
   r = smin(r, length(p - vec3(0., -.75, 0.2)) - 1., 0.5);
 
@@ -61,7 +62,7 @@ float map(vec3 p) {
   r = max(r, -(length((p - vec3(0.1, -1.4 - p.x * .3, 1.)) * vec3(.9, 1., 1.)) - .2));
   r = smin(r, (length((p - vec3(0.0, -1.45 + p.x * .3 + sin(p.z * 8. + time * 7.) * .03 - p.z * .12, 1.)) * vec3(1.6, 4., 1.)) - .2), 0.2 + (1. - vomitTime));
 
-  return r;
+  return r - max(0., (time - 169.5) * .2);
 }
 
 vec4 pixel(vec2 p) {
@@ -114,8 +115,10 @@ vec4 pixel(vec2 p) {
       }
   }
 
-  q.x -= 0.0001 + p.x * .002;
-  q.y -= 0.0001 + p.y * .002;
+  float vomitTime = clamp((time - 165.) * 1.8, 0., 1.);
+
+  q.x -= (0.0001 + p.x * .02) * (0.1 + vomitTime);
+  q.y -= (0.0001 + p.y * .02) * (0.1 + vomitTime);
 
   return texture(channel0, q) * vec4(1.01, 1.0 + sin(time * 5.2) * .01, 0.95, 0.).bgrr *  (1. - clamp((time - 178.) * .05, 0., 1.0));
 }

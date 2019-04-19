@@ -11,17 +11,17 @@
             "shader": 5
         },
         {
-            "length": 22730,
+            "length": 26290,
             "name": "Clouds",
             "shader": 2
         },
         {
-            "length": 8864,
+            "length": 7465,
             "name": "Hard strobe",
-            "shader": 1
+            "shader": 4
         },
         {
-            "length": 15768,
+            "length": 13607,
             "name": "Cramping outro",
             "shader": 2
         },
@@ -42,28 +42,33 @@
         },
         {
             "length": 4032,
-            "name": "1555319354062",
+            "name": "Flashy transition",
             "shader": 9
         },
         {
-            "length": 7804,
+            "length": 7976,
             "name": "SICK BDDHA",
             "shader": 0
         },
         {
-            "length": 76724,
-            "name": "black to buddha trans",
-            "shader": 4
-        },
-        {
-            "length": 19613,
+            "length": 2933,
             "name": "SICK / PURPL TRANSITIOn",
             "shader": 8
         },
         {
-            "length": 13997,
-            "name": "BLACKPURPL",
+            "length": 19695,
+            "name": "black to buddha trans",
             "shader": 4
+        },
+        {
+            "length": 5633,
+            "name": "1555658538134",
+            "shader": 3
+        },
+        {
+            "length": 92652,
+            "name": "WHALES",
+            "shader": 10
         }
     ],
     "shaders": [
@@ -142,7 +147,8 @@
                     "type": 2
                 },
                 {
-                    "type": 0
+                    "filename": "data/textures/hedge.png",
+                    "type": 1
                 },
                 {
                     "type": 0
@@ -259,7 +265,7 @@
                     "type": 2
                 },
                 {
-                    "shader": 0,
+                    "shader": 4,
                     "type": 2
                 },
                 {
@@ -293,6 +299,27 @@
                 }
             ],
             "id": "1555319361188"
+        },
+        {
+            "channels": [
+                {
+                    "shader": 10,
+                    "type": 2
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "id": "1555656875365"
         }
     ]
 }

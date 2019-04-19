@@ -74,5 +74,5 @@ vec4 pixel(vec2 p) {
     }
 
 
-    return vec4(cnoise(vec3(q * 300., time * 10.)));
+    return vec4(cnoise(vec3(q * 300., time * 10.))) * tan(time * 40.);
 }
