@@ -61,17 +61,22 @@
             "shader": 4
         },
         {
-            "length": 5128,
+            "length": 5127,
             "name": "blackpurpl on transbud",
             "shader": 8
         },
         {
-            "length": 21332,
+            "length": 15506,
             "name": "WHALES",
             "shader": 10
         },
         {
-            "length": 41706,
+            "length": 14156,
+            "name": "dawg tunnel",
+            "shader": 11
+        },
+        {
+            "length": 80877,
             "name": "DAWG ending",
             "shader": 3
         }
@@ -326,6 +331,27 @@
                 }
             ],
             "id": "1555656875365"
+        },
+        {
+            "channels": [
+                {
+                    "shader": 3,
+                    "type": 2
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                },
+                {
+                    "type": 0
+                }
+            ],
+            "id": "1555756731680"
         }
     ]
 }

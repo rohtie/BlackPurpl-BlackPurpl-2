@@ -95,7 +95,7 @@ float dawgphaze(vec2 p) {
     r = min(r, box(p - vec2(3.9, -0.4), vec2(0.05, 0.4)));
     r = min(r, box(p - vec2(4.05, -0.05), vec2(0.2, 0.05)));
     r = min(r, box(p - vec2(3.9, -0.35), vec2(0.2, 0.05)));
-    r = min(r, box(p - vec2(4.2, -0.75), vec2(0.2, 0.05)));
+    r = min(r, box(p - vec2(4.1, -0.75), vec2(0.2, 0.05)));
 
 
     return r;
@@ -222,8 +222,8 @@ vec4 pixel(vec2 p) {
     float text = 420.0;
 
 
-    if (time > 198.0) {
-        text = dawgphaze(p - vec2(0., 0.16));
+    if (time > 192.0) {
+        text = dawgphaze(p - vec2(0.02, 0.16));
 
       if (text > 0.0) {
           // IN
