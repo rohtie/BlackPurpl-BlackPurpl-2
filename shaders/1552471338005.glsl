@@ -10,18 +10,18 @@ float sphereField(vec3 p) {
 float map(vec3 p) {
 
 
-  float spinTime = clamp((time - 153.) * 200., 0., 1.);
-  float slowSpinTime = (time - 153.) * .000025;
-  slowSpinTime *= 1. + clamp(time - 157., 0., 1.) * 10.;
+  float rotatetime = clamp((time - 153.) * 200., 0., 1.);
+  float rotatetime2 = (time - 153.) * .000025;
+  rotatetime2 *= 1. + clamp(time - 157., 0., 1.) * 10.;
 
-  p.y -= spinTime * slowSpinTime * 1000.;
-  p.z += spinTime * slowSpinTime * 5000.;
+  p.y -= rotatetime * rotatetime2 * 1000.;
+  p.z += rotatetime * rotatetime2 * 5000.;
 
   p.zy *= rotate(2.3);
-  p.xz *= rotate(-sin(time) * (1. - spinTime) - 1.5);
+  p.xz *= rotate(-sin(time) * (1. - rotatetime) - 1.5);
 
 
-  p.xz = mix(p.xz, p.xz * rotate(2.4 + p.y * 10000. * slowSpinTime - time * slowSpinTime * 2.), spinTime);
+  p.xz = mix(p.xz, p.xz * rotate(2.4 + p.y * 10000. * rotatetime2 - time * rotatetime2 * 2.), rotatetime);
 
   p.x = abs(p.x);
 
@@ -100,7 +100,7 @@ vec4 pixel(vec2 p) {
               res = min(res, tmp/dist * 1.);
           }
 
-          return vec4(res) * vec4(1. - p.y, 1.0 + hash(p.xz) * .4, 1. - abs(p.z * .45) * .2, 0.);
+          return vec4(res) * vec4(1. - p.y, 1.0 + hash(p.xz) * .4, 1. - abs(p.z * .45) * .2, 0.) * (1. - max(time - 157., 0.));
       }
 
       dist += tmp;

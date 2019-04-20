@@ -1,5 +1,5 @@
-float snackTime = clamp((time - 180.) * .5, 0., 1.);
-float snackTime2 = clamp((time - 185.) * .1, 0., 1.);
+float dottime = clamp((time - 180.) * .5, 0., 1.);
+float dottime2 = clamp((time - 185.) * .1, 0., 1.);
 
 float caps(vec3 p,vec3 a,vec3 b,float r) {
     vec3 pa = p-a;
@@ -15,7 +15,7 @@ float map(vec3 p) {
     float px = floor(p.x / rep);
     float pz = floor(p.z / rep);
 
-    p.z += tan(p.x * 100.) * snackTime2;
+    p.z += tan(p.x * 100.) * dottime2;
 
     p.y += px * 2.3 - .4;
 
@@ -58,7 +58,7 @@ vec4 pixel(vec2 p) {
         float tmp = map(p);
 
         if (tmp < .0001) {
-            return vec4(abs(p.y) * .05, .2 + tan(time * 20.) * (1. - snackTime), .3 + p.x * .01, 0.);
+            return vec4(abs(p.y) * .05, .2 + tan(time * 20.) * (1. - dottime), .3 + p.x * .01, 0.);
         }
 
         dist += tmp;
