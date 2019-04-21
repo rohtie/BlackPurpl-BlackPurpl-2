@@ -76,7 +76,7 @@
             "shader": 11
         },
         {
-            "length": 80877,
+            "length": 76877,
             "name": "DAWG ending",
             "shader": 3
         }
@@ -335,11 +335,12 @@
         {
             "channels": [
                 {
-                    "shader": 3,
+                    "shader": 11,
                     "type": 2
                 },
                 {
-                    "type": 0
+                    "shader": 3,
+                    "type": 2
                 },
                 {
                     "type": 0

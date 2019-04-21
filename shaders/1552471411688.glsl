@@ -1,4 +1,5 @@
-float vomitTime = clamp((time - 164.) * .8, 0., 1.);
+float vomittime = clamp((time - 164.) * .8, 0., 1.);
+float vomittime2 = clamp((time - 164.75) * 5., 0., 1.);
 
 
 float thingy(vec3 p) {
@@ -26,7 +27,7 @@ float sphereField(vec3 p) {
 float map(vec3 p) {
 
   p.xz *= rotate(acos(-1.) * 1.5 + sin(time * 55.) * .02);
-  p.zy *= rotate(acos(-1.) * 0.5 - vomitTime);
+  p.zy *= rotate(acos(-1.) * 0.5 - vomittime * .6 - vomittime2 * .4);
 
   p.x = abs(p.x);
 
@@ -42,10 +43,10 @@ float map(vec3 p) {
   r = smin(r, length(p - vec3(0., -.75, 0.2)) - 1., 0.5);
 
   // EYEBROWS
-  r = min(r, (length((p - vec3(0.5, -0.3 + p.x * sin(time * .5) * .2, 1.0)) * vec3(.2, 1.5, 1.)) - .15));
+  r = min(r, (length((p - vec3(0.5, -0.3 + p.x * sin(time * .25) * .2, 1.0)) * vec3(.2, 1.5, 1.)) - .15));
 
   // Eyes
-  r = smin(r, (length((p - vec3(.6, -.92 + p.x * .3, 1.05)) * vec3(1., .9, 1.)) - .25 - sin(time * 15.) * vomitTime * .01), 0.2);
+  r = smin(r, (length((p - vec3(.6, -.92 + p.x * .3, 1.05)) * vec3(1., .9, 1.)) - .25 - sin(time * 15.) * vomittime * .01), 0.2);
   r = max(r, -(length((p - vec3(.6, -.98 + p.x * .37, 1.05)) * vec3(1., 1.1, 1.)) - .26));
   r = smin(r, (length((p - vec3(.6, -.98 + p.x * .37, 1.0)) * vec3(1., 1.1, 1.)) - .21), 0.1);
 
@@ -59,7 +60,7 @@ float map(vec3 p) {
 
   // Mouth
   r = max(r, -(length((p - vec3(0.1, -1.4 - p.x * .3, 1.)) * vec3(.9, 1., 1.)) - .2));
-  r = smin(r, (length((p - vec3(0.0, -1.45 + p.x * .3 + sin(p.z * 8. + time * 7.) * .03 - p.z * .12, 1.)) * vec3(1.6, 4., 1.)) - .2), 0.2 + (1. - vomitTime));
+  r = smin(r, (length((p - vec3(0.0, -1.45 + p.x * .3 + sin(p.z * 8. + time * 7.) * .03 - p.z * .12, 1.)) * vec3(1.6, 4., 1.)) - .2), 0.2 + (1. - vomittime));
 
   return r - max(0., (time - 167.5) * .2);
 }
@@ -74,7 +75,7 @@ vec4 pixel(vec2 p) {
 
 
   vec3 ray = vec3(p, -1.);
-  vec3 cam = vec3(-.65, 0., 5.);
+  vec3 cam = vec3(-.65, 0., 5. - vomittime2 * .9);
 
   float dist = 0.;
 
@@ -114,8 +115,11 @@ vec4 pixel(vec2 p) {
       }
   }
 
-  q.x -= (0.0001 + p.x * .02) * (0.1 + vomitTime);
-  q.y -= (0.0001 + p.y * .02) * (0.1 + vomitTime);
+  q.x -= (0.0001 + p.x * .02) * (0.1 + vomittime);
+  q.y -= (0.0001 + p.y * .02) * (0.1 + vomittime);
 
-  return texture(channel0, q) * vec4(1.01, 1.0 + sin(time * 5.2) * .01, 0.95, 0.).bgrr *  (1. - clamp((time - 178.) * .05, 0., 1.0));
+
+  // return vec4(0.);
+
+  return texture(channel0, q) * vec4(1.01, 1.0 + sin(time * 5.2) * .01, 0.95 + vomittime2 * .1, 0.).bgrr *  (1. - clamp((time - 178.) * .05, 0.  + vomittime2 * .1, 1.0));
 }

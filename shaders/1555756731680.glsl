@@ -1,10 +1,14 @@
-float disttime = min(1., max(0., (time - 192.) * .75));
-float disttime2 = min(1., max(0., (time - 196.) * .75));
+float disttime = min(1., max(0., (time - 193.) * .75));
+float disttime2 = min(1., max(0., (time - 204.) * 3.));
+float disttime3 = min(1., max(0., (time - 198.) * 3.));
 
 float map(vec3 p) {
     p.z += -time * 5.75;
 
     p.y += sin(p.z * 2.) * .2;
+
+
+    p.xy *= rotate(p.z * disttime2 * -.01 - 0.8 * disttime3);
 
     return 1. - max(abs(p.x), abs(p.y)) - 0.82 * disttime;
 }
@@ -49,7 +53,7 @@ vec4 pixel(vec2 p) {
 
             p.x += cnoise(p * 7.) * .5;
 
-            return res * vec4(1., 1., 1., 0.) * cnoise(p * 10.) + texture(channel0, mod(p.zy - vec2(time * 5., time * 10.5), vec2(1.0, 0.7)));
+            return res * vec4(1., 1., 1., 0.) * cnoise(p * 10.) + texture(channel1, mod(p.zy - vec2(time * 5., time * 10.5), vec2(1.0, 0.7)));
         }
 
         dist += tmp;
